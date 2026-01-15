@@ -37,9 +37,6 @@ const deleteTeam = asyncHandler(async (req, res) => {
   const { teamId } = req.params;
   const userId = req.user._id;
 
-  console.log("team/id:", teamId);
-  console.log("userid:", userId);
-
   const team = await Team.findOne({
     _id: teamId,
     createdUser: userId,
