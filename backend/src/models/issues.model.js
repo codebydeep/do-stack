@@ -21,6 +21,11 @@ const projectIssue = new mongoose.Schema(
         ref: "Project",
         required: true
     },
+    team: {
+        type: Schema.Types.ObjectId,
+        ref: "Team",
+        // required: true
+    },
     assignee: {
         type: Schema.Types.ObjectId,
         ref: "User",

@@ -2,7 +2,6 @@ import { asyncHandler } from "../utils/async-handler.js";
 import { ApiResponse } from "../utils/api-response.js";
 import { ApiError } from "../utils/api-error.js";
 import Team from "../models/team.model.js";
-import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import TeamInvite from "../models/teamInvite.model.js";
 import { sendEmail } from "../utils/send-mail.js";
@@ -35,7 +34,11 @@ const createTeam = asyncHandler(async (req, res) => {
 });
 
 const getAllTeams = asyncHandler(async (req, res) => {
-  const teams = await Team.find({});
+  const userId = req.user._id;
+
+  const teams = await Team.find({
+    createdUser: userId
+  });
 
   return res
     .status(200)
@@ -43,12 +46,17 @@ const getAllTeams = asyncHandler(async (req, res) => {
 });
 
 const getTeam = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+
   const { teamId } = req.params;
 
-  const team = await Team.findById(teamId);
+  const team = await Team.find({
+    _id: teamId,
+    createdUser: userId
+  });
 
   if (!team) {
-    throw new ApiError(404, "No team found!");
+    throw new ApiError(404, "No team found! || Access denied!");
   }
 
   return res
