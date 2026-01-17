@@ -11,15 +11,15 @@ const App = () => {
   return (
     <>
       <BrowserRouter>
-      <Toaster />
+        <Toaster />
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/signin" element={<Signinpage />} />
             <Route path="/signup" element={<Signuppage />} />
             <Route path="/main" element={<Mainpage />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            {/* <Homepage /> */}
+
+            <Route path="dashboard" element={<Dashboard />} />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>

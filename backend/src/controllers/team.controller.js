@@ -34,6 +34,28 @@ const createTeam = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, "Team created successfully!", team));
 });
 
+const getAllTeams = asyncHandler(async (req, res) => {
+  const teams = await Team.find({});
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Teams fetched successfully!", teams));
+});
+
+const getTeam = asyncHandler(async (req, res) => {
+  const { teamId } = req.params;
+
+  const team = await Team.findById(teamId);
+
+  if (!team) {
+    throw new ApiError(404, "No team found!");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Team fetched successfully!", team));
+});
+
 const deleteTeam = asyncHandler(async (req, res) => {
   const { teamId } = req.params;
   const userId = req.user._id;
@@ -115,9 +137,9 @@ const acceptInvite = asyncHandler(async (req, res) => {
     await team.save();
   }
 
-  (invite.status = "accepted"), await invite.save();
+  ((invite.status = "accepted"), await invite.save());
 
   return res.status(200).json(new ApiResponse(200, "Invitation Accepted!"));
 });
 
-export { createTeam, deleteTeam, inviteMember, acceptInvite };
+export { createTeam, getAllTeams, getTeam, deleteTeam, inviteMember, acceptInvite };

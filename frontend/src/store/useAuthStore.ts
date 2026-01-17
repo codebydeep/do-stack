@@ -127,7 +127,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
       // toast.error("Logout failed");
     } finally {
       set({ authUser: null });
-      toast.success("Logged out successfully");
+      // toast.success("Logged out successfully");
     }
   },
 }));
