@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo:6
+    container_name: mongo
+    ports:
+      - "27011:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  backend:
+    build: .
+    container_name: doStack
+    ports:
+      - "5000:5000"
+    environment:
+      MONGO_URI: mongodb://mongo:27017/workable
+      JWT_SECRET: b1859bbd3478d38dc0d4
+      JWT_EXPIRY: "1d"
+      NODE_ENV: production
+      RESEND_API_KEY: "re_ciBeAxZg_6VtRvKASWhrv14PWAe18V6X2"
+
+    depends_on:
+      - mongo
+
+volumes:
+  mongo-data:
