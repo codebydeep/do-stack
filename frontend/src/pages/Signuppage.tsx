@@ -1,22 +1,25 @@
 import { useAuthStore } from "@/store/useAuthStore";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const Signuppage = () => {
-  const { login, isLoggedIn } = useAuthStore();
-
+const SignupPage = () => {
+  const { signup, isSignup } = useAuthStore();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
+    fullname: "",
     email: "",
     password: "",
   });
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigate("/main");
-    }
-  }, [isLoggedIn, navigate]);
+  // ✅ redirect AFTER successful signup
+  // useEffect(() => {
+  //   if (isSignup) {
+  //     navigate("/main");
+  //   } else {
+  //     navigate("/signup");
+  //   }
+  // }, [isSignup, navigate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -27,26 +30,44 @@ const Signuppage = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await login(formData);
-    // navigate("/")
+
+    const success = await signup(formData);
+
+    if (success) {
+      navigate("/main");
+    }
+    // await signup(formData); // ✅ REGISTER
   };
 
   return (
-    <>
-      <div>
-        <div className="border-green-500 w-1/2"></div>
-        <div className="w-1/2">
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
         {/* Header */}
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Welcome Back 👋</h1>
-          <p className="text-gray-500 text-sm mt-1">
-            Please login to your account
-          </p>
+          <h1 className="text-2xl font-bold text-gray-800">
+            Create your account 🚀
+          </h1>
+          <p className="text-gray-500 text-sm mt-1">Sign up to get started</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Full Name */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Full Name
+            </label>
+            <input
+              type="text"
+              name="fullname"
+              placeholder="Your full name"
+              value={formData.fullname}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Email
@@ -62,6 +83,7 @@ const Signuppage = () => {
             />
           </div>
 
+          {/* Password */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Password
@@ -77,39 +99,25 @@ const Signuppage = () => {
             />
           </div>
 
-          <div className="flex justify-end">
-            <button
-              type="button"
-              className="text-sm text-blue-600 hover:underline"
-            >
-              Forgot password?
-            </button>
-          </div>
-
           <button
             type="submit"
-            disabled={isLoggedIn}
+            disabled={isSignup}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition duration-200"
           >
-            Login
+            {isSignup ? "Creating account..." : "Sign up"}
           </button>
         </form>
 
         {/* Footer */}
         <p className="text-center text-sm text-gray-500 mt-6">
-          Don’t have an account?{" "}
-          <span className="text-blue-600 hover:underline cursor-pointer">
-            <Link to={"/signin"}>
-            Sign up
-            </Link>
-          </span>
+          Already have an account?{" "}
+          <Link to="/signin" className="text-blue-600 hover:underline">
+            Login
+          </Link>
         </p>
       </div>
     </div>
-        </div>
-      </div>
-    </>
   );
 };
 
-export default Signuppage;
+export default SignupPage;

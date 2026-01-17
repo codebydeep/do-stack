@@ -1,106 +1,135 @@
-import { axiosInstance } from "@/lib/axios"
-import toast from "react-hot-toast"
-import { create } from "zustand"
-import { AxiosError } from "axios"
+type SignUpData = {
+  fullname: string;
+  email: string;
+  password: string;
+};
 
 type SignInData = {
-  email: string
-  password: string
-}
+  email: string;
+  password: string;
+};
 
 type AuthUser = {
-  id: string
-  email: string
-  name?: string
-}
+  id: string;
+  email: string;
+  name?: string;
+};
 
 type AuthStore = {
-  authUser: AuthUser | null
-  isSignin: boolean
-  isLoggedIn: boolean
-  isCheckAuth: boolean
+  authUser: AuthUser | null;
+  isSignup: boolean;
+  isSignin: boolean;
+  isCheckAuth: boolean;
 
-  signin: (data: SignInData) => Promise<void>
-  login: (data: SignInData) => Promise<void>
-  checkAuth: () => Promise<void>
-}
+  signup: (data: SignUpData) => Promise<boolean>;
+  signin: (data: SignInData) => Promise<void>;
+  checkAuth: () => Promise<void>;
+  logout: () => Promise<void>;
+};
 
+import { create } from "zustand";
+import toast from "react-hot-toast";
+import { axiosInstance } from "@/lib/axios";
 
 export const useAuthStore = create<AuthStore>((set) => ({
   authUser: null,
+  isSignup: false,
   isSignin: false,
-  isLoggedIn: false,
-  isCheckAuth: true,
+  isCheckAuth: false,
 
-  /* ---------- REGISTER ---------- */
-  signin: async (data) => {
-    set({ isSignin: true })
+  // SIGNUP
+  signup: async (data): Promise<boolean> => {
+    set({ isSignup: true });
 
     try {
       const res = await axiosInstance.post<{ user: AuthUser }>(
         "/user/auth/register",
         data,
         { withCredentials: true }
-      )
+      );
 
       set({
         authUser: res.data.user,
-        isSignin: true,
-      })
+        isSignup: false,
+      });
 
-      toast.success("User signed in successfully")
+      toast.success("User signed up successfully");
+
+      return true;
     } catch (error) {
-      const err = error as AxiosError
-      console.error("Signin error:", err.message)
-
-      set({ isSignin: false })
-      toast.error("Error signing in user!")
+      console.error("Signup error", error);
+      set({ isSignup: false });
+      toast.error("Signup failed");
+      return false;
     }
   },
 
-  /* ---------- LOGIN ---------- */
-  login: async (data) => {
+  // SIGNIN
+  signin: async (data) => {
+    set({ isSignin: true });
+
     try {
       const res = await axiosInstance.post<{ user: AuthUser }>(
-        "/auth/login",
+        "/user/auth/login",
         data,
         { withCredentials: true }
-      )
+      );
 
       set({
         authUser: res.data.user,
-        isLoggedIn: true,
-      })
+        isSignin: false,
+      });
 
-      toast.success("User logged in successfully")
+      toast.success("Logged in successfully");
     } catch (error) {
-      console.error("Error logging in:", error)
-      toast.error("Error logging in user!")
+      console.error("Signin error", error);
+      set({ isSignin: false });
+      toast.error("Login failed");
     }
   },
 
-  /* ---------- CHECK AUTH ---------- */
+  // CHECK AUTH
   checkAuth: async () => {
-    set({ isCheckAuth: true })
+    set({ isCheckAuth: true });
 
     try {
-      const res = await axiosInstance.get<{ user: AuthUser }>(
-        "/auth/get-user",
-        { withCredentials: true }
-      )
+      const res = await axiosInstance.get<{ user: AuthUser }>("/user/auth/me", {
+        withCredentials: true,
+      });
 
       set({
         authUser: res.data.user,
-        isLoggedIn: true,
-      })
-    } catch (error) {
-      console.error("Check auth error:", error)
+        isCheckAuth: false,
+      });
+    } catch {
       set({
         authUser: null,
-        isLoggedIn: false,
-      })
-    } finally {
-      set({ isCheckAuth: false })
+        isCheckAuth: false,
+      });
     }
   },
-}))
+
+  // LOGOUT
+  logout: async () => {
+    try {
+      await axiosInstance.get(
+        "/user/auth/logout",
+        { withCredentials: true }
+      );
+
+      // set({
+      //   authUser: null,
+      // });
+
+      toast.success("Logged out successfully");
+    } catch (error) {
+      console.error("Logout error", error);
+      // toast.error("Logout failed");
+    } finally {
+      set({ authUser: null });
+      toast.success("Logged out successfully");
+    }
+  },
+}));
+
+export default useAuthStore;

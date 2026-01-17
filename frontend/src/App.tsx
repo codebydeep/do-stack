@@ -5,6 +5,7 @@ import Signinpage from "./pages/Signinpage";
 import Mainpage from "./pages/Mainpage";
 import Signuppage from "./pages/Signuppage";
 import { Toaster } from "react-hot-toast";
+import { Dashboard } from "./pages/Dashboard";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
             <Route path="/signin" element={<Signinpage />} />
             <Route path="/signup" element={<Signuppage />} />
             <Route path="/main" element={<Mainpage />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             {/* <Homepage /> */}
           </Routes>
         </ThemeProvider>

@@ -5,6 +5,7 @@ import Team from "../models/team.model.js";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import TeamInvite from "../models/teamInvite.model.js";
+import { sendEmail } from "../utils/send-mail.js";
 
 const createTeam = asyncHandler(async (req, res) => {
   const { teamname } = req.body;
@@ -78,6 +79,15 @@ const inviteMember = asyncHandler(async (req, res) => {
   });
 
   // send email -
+  const html = `<h1>Welcome to doStack!</h1>
+  <p>Thanks for signing up.</p>`;
+
+  // await sendEmail({email, "Welcome to dostack", html})
+  await sendEmail({
+    to: [email],
+    subject: "Welcome to dostack",
+    html: html,
+  });
   console.log(`Email Send`);
 
   return res

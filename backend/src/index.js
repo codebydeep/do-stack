@@ -19,7 +19,7 @@ app.use(express.urlencoded({
     extended: true
 }))
 app.use(cors({
-    origin: process.env.BASE_URL,
+    origin: "http://localhost:5173",
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'UPDATE'],
     credentials: true,
 }))
