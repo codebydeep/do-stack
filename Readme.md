@@ -11,6 +11,8 @@
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4.1-38BDF8?logo=tailwindcss&logoColor=white)
 ![Resend](https://img.shields.io/badge/Resend-6.7.0-black)
 ![Groq](https://img.shields.io/badge/Groq-0.37.0-orange)
+![Docker](https://img.shields.io/badge/Docker-Containerization-2496ED)
+![Docker%20Compose](https://img.shields.io/badge/Docker%20Compose-Orchestration-2496ED)
 
 
 ## Overview
@@ -77,6 +79,11 @@ Whether you’re a small team or a growing organization, doStack provides a secu
  ```bash
  Checkout on - http://localhost:5173/
  ```
+### Run Locally with Docker
+
+```bash
+docker compose up --build
+```
 
 ## License
 
