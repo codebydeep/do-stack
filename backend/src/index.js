@@ -7,6 +7,7 @@ import authRoutes from "./routes/user.routes.js";
 import teamRoutes from "./routes/team.routes.js";
 import projectRoutes from "./routes/project.routes.js";
 import issueRoutes from "./routes/issues.routes.js";
+import aiRoutes from "./routes/ai.routes.js";
 
 dotenv.config()
 
@@ -29,6 +30,7 @@ app.use("/api/v1/user/auth", authRoutes)
 app.use("/api/v1/teams", teamRoutes)
 app.use("/api/v1/projects", projectRoutes)
 app.use("/api/v1/issues", issueRoutes)
+app.use("/api/v1/chat", aiRoutes)
 
 
 connectDB()

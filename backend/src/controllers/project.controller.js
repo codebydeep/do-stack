@@ -6,14 +6,22 @@ import Team from "../models/team.model.js";
 
 const createProject = asyncHandler(async (req, res) => {
   const { name, description } = req.body;
+  const { teamId } = req.params;
   const userId = req.user._id;
 
   if (!name || !description) {
     throw new ApiError(404, "Please provide all the details!");
   }
 
+  const team = await Team.findById(teamId)
+
+  if(!team){
+    throw new ApiError(404, "Team not found!")
+  }
+
   const existingProject = await Project.findOne({
     name,
+    team: teamId,
     createdBy: userId,
   });
 
@@ -24,6 +32,7 @@ const createProject = asyncHandler(async (req, res) => {
   const project = await Project.create({
     name,
     description,
+    team: teamId,
     createdBy: userId,
   });
 

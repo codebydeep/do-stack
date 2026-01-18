@@ -10,7 +10,7 @@
 ![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-1.15.15-black)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4.1-38BDF8?logo=tailwindcss&logoColor=white)
 ![Resend](https://img.shields.io/badge/Resend-6.7.0-black)
-![Groq](https://img.shields.io/badge/Groq-0.34.0-orange)
+![Groq](https://img.shields.io/badge/Groq-0.37.0-orange)
 
 
 ## Overview
