@@ -37,7 +37,7 @@ const getAllTeams = asyncHandler(async (req, res) => {
   const userId = req.user._id;
 
   const teams = await Team.find({
-    createdUser: userId
+    createdUser: userId,
   });
 
   return res
@@ -52,7 +52,7 @@ const getTeam = asyncHandler(async (req, res) => {
 
   const team = await Team.find({
     _id: teamId,
-    createdUser: userId
+    createdUser: userId,
   });
 
   if (!team) {
@@ -150,4 +150,11 @@ const acceptInvite = asyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, "Invitation Accepted!"));
 });
 
-export { createTeam, getAllTeams, getTeam, deleteTeam, inviteMember, acceptInvite };
+export {
+  createTeam,
+  getAllTeams,
+  getTeam,
+  deleteTeam,
+  inviteMember,
+  acceptInvite,
+};

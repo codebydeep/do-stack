@@ -26,16 +26,16 @@ const projectIssue = new mongoose.Schema(
         ref: "Team",
         // required: true
     },
-    assignee: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        required: true
-    },
     issueCreatedBy: {
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true
     }, 
+    assignee: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    },
     priority: {
         type: String,
         enum: ["None", "Low", "Medium", "High", "Urgent"],

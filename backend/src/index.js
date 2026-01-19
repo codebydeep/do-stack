@@ -28,8 +28,8 @@ app.use(cookieParser())
 
 app.use("/api/v1/user/auth", authRoutes)
 app.use("/api/v1/teams", teamRoutes)
-app.use("/api/v1/projects", projectRoutes)
-app.use("/api/v1/issues", issueRoutes)
+app.use("/api/v1/teams", projectRoutes)
+app.use("/api/v1/teams/issues", issueRoutes)
 app.use("/api/v1/chat", aiRoutes)
 
 

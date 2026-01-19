@@ -13,10 +13,10 @@ const createProject = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Please provide all the details!");
   }
 
-  const team = await Team.findById(teamId)
+  const team = await Team.findById(teamId);
 
-  if(!team){
-    throw new ApiError(404, "Team not found!")
+  if (!team) {
+    throw new ApiError(404, "Team not found!");
   }
 
   const existingProject = await Project.findOne({
@@ -62,16 +62,28 @@ const getAllProjects = asyncHandler(async (req, res) => {
 });
 
 const getProject = asyncHandler(async (req, res) => {
+  // const { teamId } = req.query;
   const userId = req.user._id;
-  const { projectId } = req.params;
+  const { teamId, projectId } = req.params;
 
-  const project = await Project.find({
+  const team = await Team.findOne({
+    _id: teamId,
+    $or: [{ createdUser: userId }, { "members.user": userId }],
+  });
+
+  if (!team) {
+    throw new ApiError(404, "Project not assigned to this Team");
+  }
+
+  const project = await Project.findOne({
     _id: projectId,
-    createdBy: userId,
+    team: teamId,
+    // createdBy: userId,
+    // $or: [{ createdUser: userId }, { "members.user": userId }],
   });
 
   if (!project) {
-    throw new ApiError(404, "Team not found!");
+    throw new ApiError(404, "Project not found!");
   }
 
   return res

@@ -5,7 +5,7 @@ const projectRoutes = Router()
 
 projectRoutes.post("/:teamId/create-project", verifyJwt, createProject)
 projectRoutes.get("/", verifyJwt, getAllProjects)
-projectRoutes.get("/:projectId", verifyJwt, getProject)
+projectRoutes.get("/:teamId/:projectId", verifyJwt, getProject)
 projectRoutes.delete("/delete-project/:projectId", verifyJwt, deleteProject)
 
 export default projectRoutes;
