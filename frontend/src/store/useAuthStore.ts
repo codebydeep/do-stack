@@ -28,7 +28,7 @@ type AuthStore = {
 };
 
 import { create } from "zustand";
-import toast from "react-hot-toast";
+import { toast } from "sonner"
 import { axiosInstance } from "@/lib/axios";
 
 export const useAuthStore = create<AuthStore>((set) => ({
@@ -50,16 +50,15 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
       set({
         authUser: res.data.user,
-        isSignup: false,
       });
 
-      toast.success("User signed up successfully");
+      toast("User signed up successfully");
 
       return true;
     } catch (error) {
       console.error("Signup error", error);
       set({ isSignup: false });
-      toast.error("Signup failed");
+      toast("Signup failed");
       return false;
     }
   },
@@ -77,14 +76,13 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
       set({
         authUser: res.data.user,
-        isSignin: false,
       });
 
-      toast.success("Logged in successfully");
+      toast("Logged in successfully");
     } catch (error) {
       console.error("Signin error", error);
       set({ isSignin: false });
-      toast.error("Login failed");
+      toast("Login failed");
     }
   },
 
@@ -99,7 +97,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
       set({
         authUser: res.data.user,
-        isCheckAuth: false,
+        // isCheckAuth: false,
       });
     } catch {
       set({
@@ -117,17 +115,17 @@ export const useAuthStore = create<AuthStore>((set) => ({
         { withCredentials: true }
       );
 
-      // set({
-      //   authUser: null,
-      // });
+      set({
+        authUser: null,
+      });
 
-      toast.success("Logged out successfully");
+      toast("Logged out successfully");
     } catch (error) {
       console.error("Logout error", error);
-      // toast.error("Logout failed");
+      toast("Logout failed");
     } finally {
       set({ authUser: null });
-      // toast.success("Logged out successfully");
+      toast("Logged out successfully");
     }
   },
 }));

@@ -40,7 +40,7 @@ const userRegister = async (req, res) => {
       process.env.JWT_SECRET,
       {
         expiresIn: "1d",
-      }
+      },
     );
 
     res.cookie("jwt", token, {
@@ -93,7 +93,7 @@ const userLogin = asyncHandler(async (req, res) => {
     process.env.JWT_SECRET,
     {
       expiresIn: process.env.JWT_EXPIRY,
-    }
+    },
   );
 
   res.cookie("jwt", token, {
@@ -107,7 +107,7 @@ const userLogin = asyncHandler(async (req, res) => {
     new ApiResponse(200, "User LoggedIn!", {
       id: user._id,
       email: user.email,
-    })
+    }),
   );
 });
 
@@ -118,12 +118,15 @@ const userLogout = asyncHandler(async (req, res) => {
     secure: process.env.NODE_ENV !== "development",
   });
 
-  return res.status(200).json(
-    new ApiResponse(
-        200,
-        "User Logout Done!"
-    )
-  )
+  return res.status(200).json(new ApiResponse(200, "User Logout Done!"));
 });
 
-export { userRegister, userLogin, userLogout };
+const getMe = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id).select("-password");
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Profile fetched Successfully", user));
+});
+
+export { userRegister, userLogin, userLogout, getMe };

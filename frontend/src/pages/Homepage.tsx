@@ -28,7 +28,7 @@ const Homepage = () => {
               A simple, powerful task manager built for individuals and teams.
             </p>
 
-            <Link to={"/signin"}>
+            <Link to={"/signup"}>
               <Button size="lg" variant="outline">
                 Start now – It’s free
               </Button>
